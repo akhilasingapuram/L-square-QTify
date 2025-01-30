@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import styles from "./App.module.css";
+
+import HeroSection from "./components/HeroSection/HeroSection";
+import NavBar from "./components/NavBar/NavBar";
+import {
+  fetchGenreList,
+  fetchNewAlbums,
+  fetchSongs,
+  fetchTopAlbums,
+} from "./api/api";
+import Section from "./components/Section/Section";
+
+import FAQAccordion from "./components/FAQ/FAQAccordion.jsx";
+import GenreSection from "./components/GenreSection/GenreSection";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [topAlbums, setTopAlbums] = useState([]);
+  const [newAlbums, setNewAlbums] = useState([]);
+  const [songs, setSongs] = useState([]);
+  const [genreList, setGenreList] = useState([]);
+
+  const generatedata = async () => {
+    setTopAlbums(await fetchTopAlbums());
+    setNewAlbums(await fetchNewAlbums());
+    setSongs(await fetchSongs());
+    setGenreList(await fetchGenreList());
+  };
+
+  useEffect(() => {
+    generatedata();
+  }, []);
 
   return (
-    <>
+    <div className={styles.app}>
+      <NavBar songs={songs} />
+      <HeroSection />
+      <div style={{ marginBottom: "30px" }}>
+        <Section data={topAlbums} title="Top Albums" />
+      </div>
+      <div style={{ marginBottom: "30px" }}>
+        <Section data={newAlbums} title="New Albums" />
+      </div>
+      <hr className={styles.divider} />
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <GenreSection data={songs} title="Songs" genreList={genreList} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <hr className={styles.divider} />
+      <FAQAccordion />
+    </div>
+  );
 }
 
-export default App
+export default App;
