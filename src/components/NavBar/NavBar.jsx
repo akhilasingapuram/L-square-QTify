@@ -8,7 +8,7 @@ const NavBar = ({ songs }) => {
     <nav className={styles.navbar}>
       <Logo />
       <Search songs={songs} placeholder="Search a song of your choice" />
-      <Button children="Give Feedback" />
+      <Button>Give Feedback </Button>
     </nav>
   );
 };

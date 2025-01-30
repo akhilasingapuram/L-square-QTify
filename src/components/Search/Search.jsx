@@ -6,7 +6,7 @@ const SearchDiv = ({ data }) => {
   return <p>{data.title}</p>;
 };
 
-const Search = ({ songs }) => {
+const Search = ({ songs, placeholder }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.searchBoxWrapper}>
@@ -22,6 +22,7 @@ const Search = ({ songs }) => {
               className={styles.searchBox}
               {...params}
               label="Search input"
+              placeholder={placeholder}
               InputProps={{
                 ...params.InputProps,
                 type: "search",
